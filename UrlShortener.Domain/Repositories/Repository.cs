@@ -9,6 +9,8 @@ public interface IRepository
 {
     Task<UrlShortenerModel> CreateShortUrl(UrlShortenerModel request, CancellationToken cancellationToken = default);
     Task<UrlShortenerModel> GetOriginUrl(GetShortUrlRequest request, CancellationToken cancellationToken = default);
+    Task<Audit> CreateAudit(Audit audit, CancellationToken cancellationToken = default);
+    Task<List<Audit>> GetAudits(int pageNumber, int pageSize, CancellationToken cancellationToken = default);
 }
 
 public class Repository : IRepository
@@ -30,5 +32,21 @@ public class Repository : IRepository
     public Task<UrlShortenerModel> GetOriginUrl(GetShortUrlRequest request, CancellationToken cancellationToken = default)
     {
         return _dbUrl.UrlShorteners.SingleOrDefaultAsync(url => url.ModifiedUrl == request.ModifiedUrl, cancellationToken);
+    }
+    public async Task<Audit> CreateAudit(Audit audit, CancellationToken cancellationToken = default)
+    {
+        _ = await _dbUrl.Audits.AddAsync(audit, cancellationToken);
+        _ = await _dbUrl.SaveChangesAsync(cancellationToken);
+
+        return audit;
+    }
+
+    public Task<List<Audit>> GetAudits(int pageNumber, int pageSize, CancellationToken cancellationToken = default)
+    {
+        return _dbUrl.Audits
+                    .OrderByDescending(desc => desc.Id)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync(cancellationToken);
     }
 }

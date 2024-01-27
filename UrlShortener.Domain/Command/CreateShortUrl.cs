@@ -9,7 +9,7 @@ using UrlShortener.Domain.DbContexts;
 using UrlShortener.Domain.Handlers;
 using UrlShortener.Domain.Repositories;
 
-namespace PassGuardia.Domain.Commands;
+namespace UrlShortener.Domain.Commands;
 
 public class CreateShortUrlCommand : IRequest<CreateShortUrlResult>
 {

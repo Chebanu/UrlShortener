@@ -6,7 +6,7 @@ using UrlShortener.Contracts.Http;
 using UrlShortener.Domain.Handlers;
 using UrlShortener.Domain.Repositories;
 
-namespace PassGuardia.Domain.Queries;
+namespace UrlShortener.Domain.Queries;
 
 public class GetOriginUrlByShorlUrlQuery : IRequest<GetOriginUrlByShorlUrlResult>
 {
